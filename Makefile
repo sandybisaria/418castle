@@ -1,15 +1,15 @@
-CC=g++ -m64
+CC=g++
 
 CFLAGS=-g -O3 -Wall
-LDFLAGS= -lm
+LDFLAGS=
 
-CFILES = main.cpp
-HFILES = 
+CFILES = flow-seq.cpp graph-seq.cpp
+HFILES = graph-seq.h
 
 all: flow
 
 flow: $(CFILES) $(HFILES) 
-	$(CC) $(CFLAGS) -o flow $(CFILES) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o flow-seq $(CFILES) $(LDFLAGS)
 
 clean:
-	rm -f flow
+	rm -f flow-seq
