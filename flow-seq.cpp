@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string>
 
+#include "cycletimer.h"
 #include "graph-seq.h"
 
 using namespace std;
@@ -63,9 +64,12 @@ int main(int argc, char* argv[]) {
                 }
             }
             std::cout << "Testing with input graph file = " << FILE << endl; 
+            double startTime = currentSeconds();
             max_flow = graph.maxFlow(s,t);
+            double endTime = currentSeconds();
             if (max_flow == max_flow_expected){
                 std::cout << "Passed" << endl;
+                std::cout << endTime - startTime << endl;
             }
             else{
                 std::cout << "Failed" << endl; 

@@ -3,8 +3,8 @@ CC=g++ -std=c++11
 CFLAGS=-g -O3 -Wall
 LDFLAGS=
 
-CFILES = flow-seq.cpp graph-seq.cpp
-HFILES = graph-seq.h
+CFILES = cycletimer.c flow-seq.cpp graph-seq.cpp
+HFILES = cycletimer.h graph-seq.h
 
 all: flow
 
