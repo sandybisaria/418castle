@@ -13,14 +13,14 @@ void Graph::addEdges(int u, int v, int w){
     graph[u][v] = w;
 }
 
-int Graph::maxFlow(int s, int t){
-    int max_flow = 0;
+long Graph::maxFlow(int s, int t){
+    long max_flow = 0;
     std::vector<int> parentP(num_vertices, 0);
     while (findPath(s, t, parentP)){
-        int flow = INT_MAX;
+        long flow = LONG_MAX;
         for (int v = t; v != s; v = parentP[v]){
             int u = parentP[v];
-            flow = std::min(flow, graph[u][v]);
+            flow = std::min(flow, (long) graph[u][v]);
         }
         for (int v = t; v != s; v = parentP[v]){
             int u = parentP[v];

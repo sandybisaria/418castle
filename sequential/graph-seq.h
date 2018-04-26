@@ -7,7 +7,7 @@ class Graph {
 public:
     Graph(int num_vertices);
     void addEdges(int u, int v, int w);
-    int maxFlow(int s, int t);
+    long maxFlow(int s, int t);
 
 private:
     bool findPath(int s, int d, std::vector<int>& parentP);

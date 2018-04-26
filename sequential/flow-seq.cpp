@@ -28,7 +28,8 @@ int main(int argc, char* argv[]) {
         else{
             ifstream file(FILE);
             string data;
-            int num_vertices, s, t, max_flow_expected, max_flow;
+            int num_vertices, s, t;
+            long max_flow_expected, max_flow;
             num_vertices = 0;
             s = 0;
             t = 0;
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
                     continue;
                 }
                 else if (array.size() == 1){
-                    max_flow_expected = std::stoi(array[0]);
+                    max_flow_expected = std::stol(array[0]);
                 }
                 else if (array.size() == 2){
                     s = std::stoi(array[0]);
