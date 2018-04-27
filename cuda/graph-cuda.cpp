@@ -6,7 +6,6 @@
 
 Graph::Graph(int num_vertices){
     this->nodes.assign(num_vertices+1,0);
-    this->levels.assign(num_vertices,0);
     this->graph.assign(num_vertices, std::vector<int>(num_vertices, 0));
     this->num_vertices = num_vertices;
     this->num_edges = 0;
@@ -44,19 +43,4 @@ void Graph::getCudaGraph(){
         }
     }
     nodes[num_vertices] = num_edges;
-
-    // for (size_t node = 0; node < nodes.size(); node++) {
-    //     std::cout << nodes[node] << ' ';
-    // }
-    // std::cout << std::endl;
-    // for (size_t edge = 0; edge < edges.size(); edge++) {
-    //     std::cout << edges[edge] << ' ';
-    // }
-    // std::cout << std::endl << std::endl;
-    // for (int i = 0; i < num_vertices; i++){
-    //     for (int j = 0; j < num_vertices; j++){
-    //         std::cout << graph[i][j] << ' ';
-    //     }
-    //     std::cout << std::endl;
-    // }
 }

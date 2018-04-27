@@ -65,18 +65,20 @@ int main(int argc, char* argv[]) {
                 }
             }
             std::cout << "Testing with input graph file = " << FILE << endl; 
-            // double startTime = currentSeconds();
-            max_flow = 0;
             graph.getCudaGraph();
-            // double endTime = currentSeconds();
+            double startTime = CycleTimer::currentSeconds();
+            max_flow = graph.maxFlow(s,t);
+            double endTime = CycleTimer::currentSeconds();
             if (max_flow == max_flow_expected){
                 std::cout << "Passed" << endl;
-                // std::cout << endTime - startTime << endl;
+                std::cout << endTime - startTime << endl;
             }
             else{
                 std::cout << "Failed" << endl; 
                 std::cout << "Flow returned = " << max_flow << " " << 
                 "Flow expected = " << max_flow_expected << endl;
+                std::cout << endTime - startTime << endl;
+
             }
             return 0;
         }

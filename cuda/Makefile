@@ -2,7 +2,7 @@
 
 EXECUTABLE := flow-cuda
 
-CU_FILES   := 
+CU_FILES   := main-cuda.cu
 
 CU_DEPS    :=
 
@@ -37,7 +37,8 @@ LDFRAMEWORKS := $(addprefix -framework , $(FRAMEWORKS))
 
 NVCC=nvcc
 
-OBJS=$(OBJDIR)/flow-cuda.o $(OBJDIR)/graph-cuda.o
+OBJS=$(OBJDIR)/flow-cuda.o $(OBJDIR)/main-cuda.o $(OBJDIR)/graph-cuda.o
+
 
 
 .PHONY: dirs clean

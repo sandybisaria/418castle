@@ -8,6 +8,7 @@ public:
     Graph(int num_vertices);
     void addEdges(int u, int v, int w);
     void getCudaGraph();
+    long maxFlow(int s, int t);
 
 private:
     int idx;
@@ -16,7 +17,6 @@ private:
 
     std::vector<int> nodes;
     std::vector<int> edges;
-    std::vector<int> levels;
 
     std::vector< std::vector< int > > graph;
 };
