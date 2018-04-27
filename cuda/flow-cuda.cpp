@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
             // double endTime = currentSeconds();
             if (max_flow == max_flow_expected){
                 std::cout << "Passed" << endl;
-                std::cout << endTime - startTime << endl;
+                // std::cout << endTime - startTime << endl;
             }
             else{
                 std::cout << "Failed" << endl; 

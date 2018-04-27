@@ -1,4 +1,5 @@
 flow-seq
+flow-cuda
 
 # Prerequisites
 *.d

@@ -34,7 +34,7 @@ def main():
     for i in range(n):
         if i == sink: continue
         for j in range(n):
-            if j == source: continue
+            if j == source or j == i: continue
             capacity = random.randint(mincap, maxcap)
             if capacity > 0:
                 max_flow.AddArcWithCapacity(i, j, capacity)

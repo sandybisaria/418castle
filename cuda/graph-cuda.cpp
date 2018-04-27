@@ -14,6 +14,10 @@ Graph::Graph(int num_vertices){
 }
 
 void Graph::addEdges(int u, int v, int w){
+    if (u == v) {
+        return;
+    }
+
     if (graph[v][u] == 0) { // Backward edge not added yet
         this->num_edges += 2;
         graph[u][v] = w;
@@ -41,18 +45,18 @@ void Graph::getCudaGraph(){
     }
     nodes[num_vertices] = num_edges;
 
-    for (int node = 0; node < nodes.size(); node++) {
-        cout << nodes[node] << ' ';
-    }
-    cout << endl;
-    for (int edge = 0; edge < edges.size(); edge++) {
-        cout << edges[edge] << ' ';
-    }
-    cout << endl << endl;
-    for (int i = 0; i < num_vertices; i++){
-        for (int j = 0; j < num_vertices; j++){
-            cout << graph[i][j] << ' ';
-        }
-        cout << endl;
-    }
+    // for (size_t node = 0; node < nodes.size(); node++) {
+    //     std::cout << nodes[node] << ' ';
+    // }
+    // std::cout << std::endl;
+    // for (size_t edge = 0; edge < edges.size(); edge++) {
+    //     std::cout << edges[edge] << ' ';
+    // }
+    // std::cout << std::endl << std::endl;
+    // for (int i = 0; i < num_vertices; i++){
+    //     for (int j = 0; j < num_vertices; j++){
+    //         std::cout << graph[i][j] << ' ';
+    //     }
+    //     std::cout << std::endl;
+    // }
 }
