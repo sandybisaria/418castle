@@ -9,7 +9,7 @@ HFILES = graph-seq.h
 COMPFILES = flow-omp.cpp
 HOMPFILES = 
 
-all: crun-omp $(TURBO)
+all: flow-omp 
 
 crun-omp: $(COMPFILES) $(HOMPFILES)
 	$(CC) $(CFLAGS) $(OMP) -o flow-omp $(COMPFILES) $(LDFLAGS)
