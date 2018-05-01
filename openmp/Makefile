@@ -3,19 +3,13 @@ OMP=-fopenmp -DOMP
 CFLAGS=-g -O3 -Wall 
 LDFLAGS= -lm
 
-CFILES = graph-seq.cpp
-HFILES = graph-seq.h
+CFILES = graph-seq.cpp flow-omp.cpp cycletimer.c
+HFILES = graph-seq.h cyclertimer.h
 
-COMPFILES = flow-omp.cpp
-HOMPFILES = 
+all: crun-omp
 
-all: crun-omp $(TURBO)
-
-crun-omp: $(COMPFILES) $(HOMPFILES)
-	$(CC) $(CFLAGS) $(OMP) -o flow-omp $(COMPFILES) $(LDFLAGS)
+crun-omp: $(CFILES)
+	$(CC) $(CFLAGS) $(OMP) -o flow-omp $(CFILES) $(LDFLAGS)
 	
 clean:
-	rm -f *~ *.pyc
-	rm -rf *.dSYM
-	rm -f *.tgz
 	rm -f flow-omp

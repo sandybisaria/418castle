@@ -13,43 +13,79 @@ void Graph::addEdges(int u, int v, int w){
     graph[u][v] = w;
 }
 
-long Graph::maxFlow(int s, int t){
-    long max_flow = 0;
-    std::vector<int> parentP(num_vertices, 0);
-    while (findPath(s, t, parentP)){
-        long flow = LONG_MAX;
-        for (int v = t; v != s; v = parentP[v]){
-            int u = parentP[v];
-            flow = std::min(flow, (long) graph[u][v]);
-        }
-        for (int v = t; v != s; v = parentP[v]){
-            int u = parentP[v];
-            graph[u][v] -= flow;
-            graph[v][u] += flow;
-        }
-        max_flow += flow;
-    }
-    return max_flow;
-}
+long Graph::maxFlow(int s, int t) {
+    long *vertex_height = (long *)calloc(num_vertices, sizeof(long));
+    vertex_height[s] = num_vertices;
 
-bool Graph::findPath(int s, int d, std::vector<int>& parentP){
-    std::vector<bool> visited(num_vertices, false);
-    std::queue<int> q;
-    q.push(s);
-    visited[s] = true;
-    parentP[s] = -1;
-    while (!q.empty()){
-        int u = q.front();
-        q.pop();
-        for (int v = 0; v < num_vertices; v++){
-            if (visited[v] == false && graph[u][v] > 0){
-                q.push(v);
-                parentP[v] = u;
-                visited[v] = true;
+    long *net_flow = (long *)calloc(num_vertices, sizeof(long));
+    long *residual_cap = (long *)calloc(num_vertices * num_vertices, sizeof(long));
+    for (int i = 0; i < num_vertices; i++)
+        for (int j = 0; j < num_vertices; j++)
+            residual_cap[i*num_vertices + j] = graph[i][j];
+
+    for (int u = 0; u < num_vertices; u++) {
+        residual_cap[s*num_vertices + u] = 0;
+        residual_cap[u*num_vertices + s] = graph[u][s] + graph[s][u];
+        net_flow[u] = graph[s][u];
+    }
+
+    while (1) {
+        bool operations_done = false;
+        for (int u = 0; u < num_vertices; u++) {
+            if (u == s || u == t)
+                continue;
+
+            while (net_flow[u] > 0) {
+                operations_done = true;
+
+                long old_flow = net_flow[u];
+                int lowest_neighbor = -1;
+                long lowest_height = LONG_MAX;
+                for (int v = 0; v < num_vertices; v++) {
+                    if (residual_cap[u*num_vertices + v] > 0) {
+                        if (vertex_height[v] < lowest_height) {
+                            lowest_neighbor = v;
+                            lowest_height = vertex_height[v];
+                        }
+                    }
+                }
+
+                if (vertex_height[u] > lowest_height) {
+                    long d = old_flow;
+                    if (residual_cap[u*num_vertices + lowest_neighbor] < d)
+                        d = residual_cap[u*num_vertices + lowest_neighbor];
+
+                    residual_cap[u*num_vertices + lowest_neighbor] -= d;
+                    residual_cap[lowest_neighbor*num_vertices + u] += d;
+
+                    net_flow[u] -= d;
+                    net_flow[lowest_neighbor] += d;
+                } else {
+                    vertex_height[u] = lowest_height + 1;
+                }
             }
         }
+
+        if (!operations_done)
+            break;
     }
 
-    return (visited[d] == true);
+    // for (int u = 0; u < num_vertices; u++) {
+    //     printf("net_flow[%d] = %ld\n", u, net_flow[u]);
+    // }
+    // for (int u = 0; u < num_vertices; u++) {
+    //     printf("vertex_height[%d] = %ld\n", u, vertex_height[u]);
+    // }
+    // for (int u = 0; u < num_vertices; u++) {
+    //     for (int v = 0; v < num_vertices; v++) {
+    //         printf("residual_cap[%d][%d] = %ld\n", u, v, residual_cap[u]);
+    //     }
+    // }
+
+    // long max_flow = 0;
+    // for (int u = 0; u < num_vertices; u++) {
+    //     max_flow += net_flow[u];
+    // }
+    return net_flow[t];
 }
 
