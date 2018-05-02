@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
                                                         std::stoi(array[2]));
                 }
             }
-            omp_set_num_threads(2);
+            omp_set_num_threads(8);
             std::cout << "Testing with input graph file = " << FILE << endl; 
             double startTime = currentSeconds();
             max_flow = graph.maxFlow(s,t);

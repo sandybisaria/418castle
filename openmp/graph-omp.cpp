@@ -33,26 +33,25 @@ long Graph::maxFlow(int s, int t) {
         for (int j = 0; j < num_vertices; j++)
             residual_cap[i*num_vertices + j] = graph[i][j];
 
+    long s_outflow = 0;
     for (int u = 0; u < num_vertices; u++) {
         residual_cap[s*num_vertices + u] = 0;
         residual_cap[u*num_vertices + s] = graph[u][s] + graph[s][u];
         net_flow[u] = graph[s][u];
+        s_outflow += graph[s][u];
     }
 
-    #pragma omp parallel shared(vertex_height, net_flow, residual_cap)
+    #pragma omp parallel shared(vertex_height, net_flow, residual_cap, s_outflow)
     {
         int start = start_position(num_vertices, omp_get_num_threads(), omp_get_thread_num());
         int end = start_position(num_vertices, omp_get_num_threads(), omp_get_thread_num() + 1);
 
-        while (1) {
-
-            bool operations_done = false;
+        while (s_outflow != net_flow[t]) {
             for (int u = start; u < end; u++) {
                 if (u == s || u == t)
                     continue;
 
                 while (net_flow[u] > 0) {
-                    operations_done = true;
 
                     long old_flow = net_flow[u];
                     int lowest_neighbor = -1;
@@ -71,26 +70,19 @@ long Graph::maxFlow(int s, int t) {
                         if (residual_cap[u*num_vertices + lowest_neighbor] < d)
                             d = residual_cap[u*num_vertices + lowest_neighbor];
 
-                            #pragma omp atomic
-                            residual_cap[u*num_vertices + lowest_neighbor] -= d;
-                            #pragma omp atomic
-                            residual_cap[lowest_neighbor*num_vertices + u] += d;
-                            #pragma omp atomic
-                            net_flow[u] -= d;
-                            #pragma omp atomic
-                            net_flow[lowest_neighbor] += d;
+                            __sync_fetch_and_sub(&residual_cap[u*num_vertices + lowest_neighbor], d);
+                            __sync_fetch_and_add(&residual_cap[lowest_neighbor*num_vertices + u], d);
+                            __sync_fetch_and_sub(&net_flow[u], d);
+                            __sync_fetch_and_add(&net_flow[lowest_neighbor], d);
+
+                            if (lowest_neighbor == s)
+                                __sync_fetch_and_sub(&s_outflow, d);
                     } else {
-                        #pragma omp atomic
                         vertex_height[u] = lowest_height + 1;
                     }
                 }
             }
-
-            if (!operations_done)
-                break;
         }
-
-        #pragma omp barrier
     }
 
     // for (int u = 0; u < num_vertices; u++) {
@@ -105,15 +97,16 @@ long Graph::maxFlow(int s, int t) {
     //     }
     // }
 
-    // long max_flow = 0;
-    // for (int u = 0; u < num_vertices; u++) {
-    //     max_flow += net_flow[u];
-    // }
+    long max_flow = 0;
+    for (int u = 0; u < num_vertices; u++) {
+        if (u != s)
+            max_flow += net_flow[u];
+    }
 
     free(vertex_height);
     free(net_flow);
     free(residual_cap);
 
-    return net_flow[t];
+    return max_flow;
 }
 
