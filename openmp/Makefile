@@ -3,8 +3,8 @@ OMP=-fopenmp -DOMP
 CFLAGS=-g -O3 -Wall 
 LDFLAGS= -lm
 
-CFILES = graph-seq.cpp flow-omp.cpp cycletimer.c
-HFILES = graph-seq.h cyclertimer.h
+CFILES = graph-omp.cpp flow-omp.cpp cycletimer.c
+HFILES = graph-omp.h cyclertimer.h
 
 all: crun-omp
 
