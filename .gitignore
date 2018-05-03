@@ -1,6 +1,7 @@
 flow-seq
 flow-cuda
 flow-omp
+flow-mpi
 
 # Prerequisites
 *.d
