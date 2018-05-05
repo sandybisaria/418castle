@@ -2,7 +2,6 @@
 #define GRAPH_SEQ_H
 
 #include <vector>
-#include <mpi.h>
 
 class Graph {
 public:

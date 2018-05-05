@@ -5,8 +5,7 @@
 #include <string>
 
 #include "cycletimer.h"
-#include "graph-mpi.h"
-
+#include "graph-seq.h"
 
 using namespace std;
  
@@ -75,8 +74,8 @@ int main(int argc, char* argv[]) {
             }
             else{
                 std::cout << "Failed" << endl; 
-                std::cout << "Flow returned = " << max_flow << " " << 
-                "Flow expected = " << max_flow_expected << endl;
+                std::cout << "Matching size found = " << max_flow << " " << 
+                "Mathcing size expected = " << max_flow_expected << endl;
             }
             return 0;
         }
