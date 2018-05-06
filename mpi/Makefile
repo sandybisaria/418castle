@@ -1,10 +1,10 @@
 CC=gcc
 
 MPI=-DMPI
-MPICC = mpicc
+MPICC = mpic++
 
 DEBUG=0
-CFLAGS=-g -O3 -Wall
+CFLAGS=-g -O3 -Wall -DOMPI_SKIP_MPICXX -std=c++11
 LDFLAGS= -lm
 
 CFILES = graph-mpi.cpp flow-mpi.cpp cycletimer.c

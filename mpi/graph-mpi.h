@@ -11,7 +11,7 @@ public:
     long maxFlow(int s, int t);
 
 private:
-    bool findPath(int s, int d, std::vector<int>& parentP);
+    void partition(int s, int process_count, std::vector< std::vector<bool> >& vertices_per_proc);
     int num_vertices;
     std::vector< std::vector< int > > graph;
 };
