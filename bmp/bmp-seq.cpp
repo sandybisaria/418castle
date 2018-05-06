@@ -26,21 +26,13 @@ int main(int argc, char* argv[]) {
             exit(0);
         }
         else{
+            int num_vertices = 0;
+            int second_partition = 0;
+            int bpm_expected = 0;
+
             ifstream file(FILE);
             string data;
-            int num_vertices, s, t;
-            long max_flow_expected, max_flow;
-            num_vertices = 0;
-            s = 0;
-            t = 0;
-            max_flow_expected = 0;
-            getline(file, data);
-            num_vertices = std::stoi(data);
-            if (num_vertices == 0){
-                std::cout << "Error: vertices = 0" << endl;
-                exit(0);
-            }
-            Graph graph(num_vertices);
+            Graph graph(0, 0); // Should be replaced...
             while (file && getline(file, data)){
                 std::vector<std::string> array;
                 std::size_t pos = 0, found;
@@ -53,29 +45,30 @@ int main(int argc, char* argv[]) {
                     continue;
                 }
                 else if (array.size() == 1){
-                    max_flow_expected = std::stol(array[0]);
+                    bpm_expected = std::stol(array[0]);
                 }
                 else if (array.size() == 2){
-                    s = std::stoi(array[0]);
-                    t = std::stoi(array[1]);
+                    num_vertices = std::stoi(array[0]);
+                    second_partition = std::stoi(array[1]);
+
+                    graph = Graph(num_vertices, second_partition);
                 }
                 else if (array.size() == 3){
-                    graph.addEdges(std::stoi(array[0]),std::stoi(array[1]),
-                                                        std::stoi(array[2]));
+                    graph.addEdges(std::stoi(array[0]), std::stoi(array[1]), std::stoi(array[2]));
                 }
             }
             std::cout << "Testing with input graph file = " << FILE << endl; 
             double startTime = currentSeconds();
-            max_flow = graph.maxFlow(s,t);
+            int bpm = graph.bipartiteMatching();
             double endTime = currentSeconds();
-            if (max_flow == max_flow_expected){
+            if (bpm == bpm_expected){
                 std::cout << "Passed" << endl;
                 std::cout << endTime - startTime << endl;
             }
             else{
                 std::cout << "Failed" << endl; 
-                std::cout << "Matching size found = " << max_flow << " " << 
-                "Mathcing size expected = " << max_flow_expected << endl;
+                std::cout << "Matching size found = " << bpm << " " << 
+                             "Matching size expected = " << bpm_expected << endl;
             }
             return 0;
         }

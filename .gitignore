@@ -3,6 +3,8 @@ flow-cuda
 flow-omp
 flow-mpi
 
+bmp-seq
+
 # Prerequisites
 *.d
 
