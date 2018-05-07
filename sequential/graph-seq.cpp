@@ -33,7 +33,7 @@ long Graph::maxFlow(int s, int t){
 }
 
 bool Graph::findPath(int s, int d, std::vector<int>& parentP){
-    std::vector<bool> visited(num_vertices, false);
+    static std::vector<bool> visited(num_vertices, false);
     std::queue<int> q;
     q.push(s);
     visited[s] = true;
@@ -50,6 +50,10 @@ bool Graph::findPath(int s, int d, std::vector<int>& parentP){
         }
     }
 
-    return (visited[d] == true);
+    bool found = (visited[d] == true);
+    for (int v = 0; v < num_vertices; v++){
+        visited[v] = false;
+    }
+    return found;
 }
 
