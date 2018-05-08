@@ -4,6 +4,9 @@ flow-omp
 flow-mpi
 
 bmp-seq
+bmp-omp
+
+*.csv
 
 # Prerequisites
 *.d

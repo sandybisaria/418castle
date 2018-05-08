@@ -1,5 +1,5 @@
-#ifndef GRAPH_SEQ_H
-#define GRAPH_SEQ_H
+#ifndef GRAPH_OMP_H
+#define GRAPH_OMP_H
 
 #include <vector>
 #include <set>
@@ -15,12 +15,10 @@ public:
 private:
     int num_vertices;
     AdjMat graph;
-    std::vector< int > degree;
   
     int a_size, b_size;
 
-    AdjMat karpSipser();
-    void matchAndUpdate(AdjMat& matching, int a, std::vector<bool>& visited);
+    long maxFlow(int s, int t);
 };
 
 #endif

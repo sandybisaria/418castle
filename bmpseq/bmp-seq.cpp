@@ -3,10 +3,9 @@
 #include <sstream>
 #include <stdlib.h>
 #include <string>
-#include <omp.h>
 
 #include "cycletimer.h"
-#include "graph-omp.h"
+#include "graph-seq.h"
 
 using namespace std;
  
@@ -58,7 +57,6 @@ int main(int argc, char* argv[]) {
                     graph.addEdges(std::stoi(array[0]), std::stoi(array[1]), std::stoi(array[2]));
                 }
             }
-            omp_set_num_threads(8);
             std::cout << "Testing with input graph file = " << FILE << endl; 
             double startTime = currentSeconds();
             int bpm = graph.bipartiteMatching();

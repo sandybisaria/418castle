@@ -7,58 +7,72 @@
 
 #include "graph-omp.h"
 
-Graph::Graph(int num_vertices){
-    graph.assign(num_vertices, std::vector<int>(num_vertices, 0));
+#define SD(i) ((i) - a_size)
+#define SU(i) ((i) + a_size)
+
+Graph::Graph(int num_vertices, int b){
     this->num_vertices = num_vertices;
+    graph.assign(num_vertices, std::vector<int>(num_vertices, 0));
+    degree.assign(num_vertices, 0);
 }
 
-void Graph::addEdges(int u, int v, int w){
+void Graph::addEdges(int u, int v, int w) {
     graph[u][v] = w;
+    graph[v][u] = w;
+
+    degree[u]++;
+    degree[v]++;
 }
 
-int Graph::getDegree(int u){
-    int deg = 0;
-    for (int i = 0; i < num_vertices; i++){
-        if (graph[u][i] > 0){
-            deg+=1;
+int Graph::bipartiteMatching() {
+    return 0;
+}
+
+AdjMat Graph::karpSipser() {
+    AdjMat matching(num_vertices, std::vector<int>(num_vertices, 0));
+
+    std::vector<int> Q_1;
+    Q_1.reserve(num_vertices);
+    std::vector<int> Q_star;
+    Q_star.reserve(num_vertices);
+
+    std::vector<bool> visited;
+    visited.assign(num_vertices, false); // Parallelize?
+
+    // Parallelize?
+    for (int a = 0; a < a_size; a++) {
+        if (degree[a] == 1) {
+            Q_1.push_back(a);
+        } else {
+            Q_star.push_back(a);
         }
     }
-    return deg;
+
+    // Parallelize?
+    for (auto a : Q_1) {
+        ;
+    }
+
+    // Parallelize?
+    for (auto a : Q_star) {
+        ;
+    }
+
+    return matching;
 }
 
+void Graph::matchAndUpdate(AdjMat& matching, int a, std::vector<bool>& visited) {
+    if (std::atomic_fetch_add(&visited[a], 1) == 0) {
+        for (int b = b_size; b < num_vertices; b++) {
+            if (graph[a][b] != 1)
+                continue;
 
+            if (std::atomic_fetch_add(&visited[b], 1) == 0) {
+                matching[a][b] = 1;
+                matching[b][a] = 1;
 
-
-long Graph::parallelKarpSipser(){
-    long result;
-    std::set<std::tuple<int, int>> M;
-    std::set<int> Q;
-    std::set<int> Qstar;
-    std::vector<int> visited;
-    //parallelize this
-    visited.assign(num_vertices, 0);
-    //parallelize this
-    for (int x = 0; x < sizeX; x++){
-        if (getDegree(x) == 1){
-            Q.insert(x);
+                
+            }
         }
-        else{
-            Qstar.insert(x);
-        }
     }
-    for(auto u: Q) {
-        matchAndUpdate(M,visited,u);
-    }
-    for(auto u: Qstar) {
-        matchAndUpdate(M,visited,u);
-    }
-    result = M.size();
-    return result;
-
 }
-
-void Graph::matchAndUpdate(std::set<std::tuple<int, int>>& M,std::vector<int>& visited, int u){
-    //need to figure out fetch and add part
-
-}
-

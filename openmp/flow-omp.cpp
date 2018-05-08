@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
             ifstream file(FILE);
             string data;
             int num_vertices, s, t;
-            long max_flow_expected, max_flow;
+            long max_flow_expected = -1, max_flow;
             num_vertices = 0;
             s = 0;
             t = 0;
